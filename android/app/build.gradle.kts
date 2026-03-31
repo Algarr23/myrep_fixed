@@ -29,7 +29,6 @@ android {
 
     buildTypes {
         release {
-            // For now using debug signing so flutter run --release works
             signingConfig = signingConfigs.getByName("debug")
         }
     }
