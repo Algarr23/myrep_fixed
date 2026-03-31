@@ -35,7 +35,7 @@ android {
     // 🔥 RINOMINA AUTOMATICA DELL’APK
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            outputFileName = "PersonalMedApp-${variant.name}.apk"
+            outputFileName = "personal_med_app-${variant.name}.apk"
         }
     }
 }
