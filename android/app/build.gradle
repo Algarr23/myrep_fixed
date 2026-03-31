@@ -1,18 +1,17 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id("dev.flutter.flutter-gradle-plugin")
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'dev.flutter.flutter-gradle-plugin'
 }
 
 android {
-    namespace = "com.example.myrep_fixed"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    namespace "com.example.myrep_fixed"
+    compileSdk flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
@@ -20,28 +19,27 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.myrep_fixed"
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        applicationId "com.example.myrep_fixed"
+        minSdk flutter.minSdkVersion
+        targetSdk flutter.targetSdkVersion
+        versionCode flutter.versionCode
+        versionName flutter.versionName
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig signingConfigs.debug
         }
     }
 
     // 🔥 RINOMINA AUTOMATICA DELL’APK
-    applicationVariants.all {
-        outputs.all {
-            val variantName = name
-            outputFileName = "PersonalMedApp-$variantName.apk"
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "PersonalMedApp-${variant.name}.apk"
         }
     }
 }
 
 flutter {
-    source = "../.."
+    source "../.."
 }
