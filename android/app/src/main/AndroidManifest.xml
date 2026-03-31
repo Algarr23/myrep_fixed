@@ -1,33 +1,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myrep_fixed">
 
-    <!-- Permessi per leggere file Excel -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <!-- Permessi richiesti da Android 13+ -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <!-- 🔍 Necessario per permettere a FilePicker di aprire file -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.OPEN_DOCUMENT" />
+        </intent>
+    </queries>
 
     <application
         android:label="myrep_fixed"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
-        android:requestLegacyExternalStorage="true">
+        android:icon="@mipmap/ic_launcher">
 
-        <!-- Supporto ai file Excel nel file picker -->
-        <queries>
-            <intent>
-                <action android:name="android.intent.action.VIEW" />
-                <data android:mimeType="application/vnd.ms-excel" />
-            </intent>
-            <intent>
-                <action android:name="android.intent.action.VIEW" />
-                <data android:mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
-            </intent>
-        </queries>
-
+        <!-- Permette all'app Flutter di funzionare correttamente -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -38,11 +27,16 @@
             android:windowSoftInputMode="adjustResize">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
         </activity>
+
+        <!-- Splash screen -->
+        <meta-data
+            android:name="io.flutter.embedding.android.SplashScreenDrawable"
+            android:resource="@drawable/launch_background" />
 
         <meta-data
             android:name="flutterEmbedding"
@@ -51,3 +45,4 @@
     </application>
 
 </manifest>
+
