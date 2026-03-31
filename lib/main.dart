@@ -7,7 +7,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
 void main() async {
-  // Inizializza i plugin prima di far partire l'app
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MedApp());
 }
@@ -111,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (result != null) {
       setState(() => _isLoading = true);
+
       try {
         var bytes = result.files.first.bytes;
         var excel = Excel.decodeBytes(bytes!);
@@ -118,18 +118,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
         for (var table in excel.tables.keys) {
           var rows = excel.tables[table]!.rows;
+
           for (var i = 1; i < rows.length; i++) {
             var row = rows[i];
+
             if (row.length >= 6) {
-              newDoctors.add(Doctor(
-                id: const Uuid().v4(),
-                firstName: row[0]?.value?.toString() ?? '',
-                lastName: row[1]?.value?.toString() ?? '',
-                specialization: row[2]?.value?.toString() ?? '',
-                brick: row[3]?.value?.toString() ?? '',
-                phone: row[4]?.value?.toString() ?? '',
-                email: row[5]?.value?.toString() ?? '',
-              ));
+              newDoctors.add(
+                Doctor(
+                  id: const Uuid().v4(),
+                  firstName: row[0]?.value?.toString() ?? '',
+                  lastName: row[1]?.value?.toString() ?? '',
+                  specialization: row[2]?.value?.toString() ?? '',
+                  brick: row[3]?.value?.toString() ?? '',
+                  phone: row[4]?.value?.toString() ?? '',
+                  email: row[5]?.value?.toString() ?? '',
+                ),
+              );
             }
           }
         }
@@ -138,13 +142,16 @@ class _HomeScreenState extends State<HomeScreen> {
           _doctors = newDoctors;
           _isLoading = false;
         });
+
         await _saveData();
+
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Importazione completata!')),
         );
       } catch (e) {
         setState(() => _isLoading = false);
+
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Errore: $e')),
@@ -154,7 +161,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _launchUrl(String url) async {
-    if (!await launchUrl(Uri.parse(url))) {
+    final uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
       throw Exception('Impossibile aprire $url');
     }
   }
@@ -180,11 +188,13 @@ class _HomeScreenState extends State<HomeScreen> {
           ? const Center(child: CircularProgressIndicator())
           : _doctors.isEmpty
               ? const Center(
-                  child: Text('Nessun medico. Importa un file Excel.'))
+                  child: Text('Nessun medico. Importa un file Excel.'),
+                )
               : ListView.builder(
                   itemCount: _doctors.length,
                   itemBuilder: (context, index) {
                     final doctor = _doctors[index];
+
                     return Card(
                       margin: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
@@ -192,10 +202,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         leading: CircleAvatar(
                           backgroundColor: Colors.indigo,
                           child: Text(
-                              doctor.lastName.isNotEmpty
-                                  ? doctor.lastName[0]
-                                  : '?',
-                              style: const TextStyle(color: Colors.white)),
+                            doctor.lastName.isNotEmpty
+                                ? doctor.lastName[0]
+                                : '?',
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ),
                         title: Text('${doctor.firstName} ${doctor.lastName}'),
                         subtitle:
@@ -204,13 +215,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon:
-                                  const Icon(Icons.phone, color: Colors.green),
+                              icon: const Icon(Icons.phone,
+                                  color: Colors.green),
                               onPressed: () =>
                                   _launchUrl('tel:${doctor.phone}'),
                             ),
                             IconButton(
-                              icon: const Icon(Icons.email, color: Colors.blue),
+                              icon: const Icon(Icons.email,
+                                  color: Colors.blue),
                               onPressed: () =>
                                   _launchUrl('mailto:${doctor.email}'),
                             ),
